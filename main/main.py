@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True,
-                   autoincrement=False)  # autoicrement is set to false because the product is created in the admin app
+                   autoincrement=False)  # autoincrement is set to false because the product is created in the admin app
     title = db.Column(db.String(200))
     image = db.Column(db.String(200))
 
