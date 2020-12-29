@@ -16,9 +16,22 @@ services:
       - 8000:8000
     volumes:
       - ./admin:/app
+    restart: always  
+    command: 'python manage.py runserver 0.0.0.0:8000'  
     depends_on:
       - admin_db
       - rabbitmq
+      - admin_queue
+
+  admin_queue:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    restart: always
+    command: 'python consumer.py' 
+    depends_on:
+    - admin_db
+    - rabbitmq   
 
   admin_db:
     image: mysql:5.7.22
@@ -31,7 +44,7 @@ services:
     volumes:
       - ./admin/.dbdata:/var/lib/mysql
     ports:
-      - 33066:3306
+      - 33066:3306      
 
   main:
     build:
@@ -41,9 +54,22 @@ services:
       - 8001:5000
     volumes:
       - ./main:/app
+    restart: always  
+    command: 'python main.py'  
     depends_on:
       - main_db
       - rabbitmq
+      - main_queue
+
+  main_queue:
+    build:
+      context: ./main
+      dockerfile: Dockerfile
+    command: 'python consumer.py' 
+    restart: always
+    depends_on:
+    - main_db
+    - rabbitmq   
 
   main_db:
     image: mysql:5.7.22
