@@ -1,7 +1,6 @@
-from django.contrib import admin
 from django.urls import path
 
-from .views import ProductVieSet
+from .views import ProductVieSet, UserViewSet
 
 urlpatterns = [
     path('products', ProductVieSet.as_view({
@@ -12,5 +11,9 @@ urlpatterns = [
         'get': 'retrieve',
         'put': 'update',
         'delete': 'destroy'
+    })),
+    path('user', UserViewSet.as_view({
+        'get': 'get',
+        'post': 'create'
     }))
 ]
