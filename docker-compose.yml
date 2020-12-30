@@ -13,7 +13,7 @@ services:
       context: ./admin
       dockerfile: Dockerfile
     ports:
-      - 8000:8000
+      - 8000:8000 
     volumes:
       - ./admin:/app
     restart: always  

@@ -1,4 +1,16 @@
+import json
 import pika
+import os
+import django
+
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'admin.settings')
+django.setup()
+
+
+from products.models import Product
+
+
 
 cred = pika.PlainCredentials('guest', 'guest')
 params = pika.ConnectionParameters('rabbitmq', 5672, '/', cred)
@@ -12,7 +24,12 @@ channel.queue_declare(queue='admin')
 
 def callback(ch, method, properties, body):
     print('Received in admin')
-    print(body)
+    id = json.loads(body)
+    print(id)
+    product = Product.objects.get(id=id)
+    product.likes = product.likes + 1
+    product.save()
+    print('Product likes increased')
 
 
 channel.basic_consume(

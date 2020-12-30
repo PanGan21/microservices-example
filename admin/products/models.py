@@ -8,4 +8,4 @@ class Product(models.Model):
 
 
 class User(models.Model):
-    name = models.CharField(max_length=200)
+    pass
